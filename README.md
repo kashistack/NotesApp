@@ -1,4 +1,3 @@
-
 # NotesApp (ASP.NET Core 8 MVC) - Clean Architecture (Minimal)
 
 This is a minimal, modular Notes application built with ASP.NET Core 8 MVC, EF Core (Code-First), and a Dockerized SQL Server (for the database). The UI is plain HTML (no Bootstrap) and supports:
@@ -62,3 +61,6 @@ docker compose up -d
 ## Notes
 
 - This is a minimal example meant to be used as a starting point. Add migrations, tests, authentication, validations and production hardening when deploying.
+=======
+# NotesApp
+>>>>>>> c13d486b6c708c903165921aa13b0bd12427fd41
