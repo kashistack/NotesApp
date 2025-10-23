@@ -1,0 +1,67 @@
+
+@model IEnumerable<Notes.Application.DTOs.NoteDto>
+@using Notes.Domain.Enums
+@{
+    ViewData["Title"] = "Notes";
+}
+<h1>Notes</h1>
+
+<form asp-controller="Notes" asp-action="Create" method="post" class="create-form">
+    <input name="title" placeholder="Title" maxlength="200" />
+    <textarea name="content" placeholder="Write a note..." rows="3"></textarea>
+    <select name="priority">
+        <option value="0">Low</option>
+        <option value="1">Medium</option>
+        <option value="2">High</option>
+    </select>
+    <button type="submit">Create</button>
+</form>
+
+@if (!Model.Any())
+{
+    <p class="muted">No notes yet.</p>
+}
+else
+{
+    <div class="notes-grid">
+        @foreach (var note in Model)
+        {
+            <div class="note-card priority-@note.Priority.ToString().ToLower()" data-note-id="@note.Id">
+                <div class="note-header">
+                    <strong class="note-title">@note.Title</strong>
+                    <div class="note-actions">
+                        <button class="btn-edit" data-note-id="@note.Id">Edit</button>
+                        <form asp-controller="Notes" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this note?');">
+                            <input type="hidden" name="id" value="@note.Id" />
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="note-body">
+                    <div class="note-content" id="content-@note.Id">@Html.Raw(System.Net.WebUtility.HtmlEncode(note.Content).Replace("
+", "<br/>"))</div>
+
+                    <form asp-controller="Notes" asp-action="Edit" method="post" class="inline-edit-form" id="edit-form-@note.Id" style="display:none;">
+                        <input type="hidden" name="id" value="@note.Id" />
+                        <input name="title" value="@note.Title" placeholder="Title" maxlength="200" />
+                        <textarea name="content" rows="4">@note.Content</textarea>
+                        <select name="priority">
+                            <option value="0" @(note.Priority == Priority.Low ? "selected" : "")>Low</option>
+                            <option value="1" @(note.Priority == Priority.Medium ? "selected" : "")>Medium</option>
+                            <option value="2" @(note.Priority == Priority.High ? "selected" : "")>High</option>
+                        </select>
+                        <div class="edit-actions">
+                            <button type="submit">Save</button>
+                            <button type="button" class="btn-cancel" data-note-id="@note.Id">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="note-footer">
+                    <small>Created: @note.CreatedAt.ToLocalTime().ToString("g") @(note.UpdatedAt.HasValue ? $"· Updated: {note.UpdatedAt.Value.ToLocalTime().ToString("g")}" : "")</small>
+                </div>
+            </div>
+        }
+    </div>
+}
