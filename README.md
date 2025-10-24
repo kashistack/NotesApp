@@ -10,31 +10,30 @@ This is a minimal, modular Notes application built with ASP.NET Core 8 MVC, EF C
 
 ## Quick steps (Windows / CMD)
 
-1. Extract the zip and open a terminal in the `NotesApp` folder.
-2. Start SQL Server Docker container (docker-compose is provided):
+1. Start SQL Server Docker container (docker-compose is provided):
    ```cmd
    docker compose up -d
    ```
    This runs SQL Server and maps port 1433 -> host 1433. SA password is `Your@Password123` (change if desired).
 
-3. Restore tools if needed:
+2. Restore tools if needed:
    ```cmd
    dotnet tool install --global dotnet-ef --version 8.*
    ```
 
-4. Restore and build:
+3. Restore and build:
    ```cmd
    dotnet restore
    dotnet build
    ```
 
-5. Create the database (EF Core migrations are not included; use `EnsureCreated` at runtime or run commands):
+4. Create the database (EF Core migrations are not included; use `EnsureCreated` at runtime or run commands):
    ```cmd
    dotnet ef database update -p Notes.Infrastructure -s Notes.Web
    ```
    If `dotnet ef` is not configured, the app will create the DB automatically on startup using `EnsureCreated`.
 
-6. Run the Web app:
+5. Run the Web app:
    ```cmd
    dotnet run --project Notes.Web
    ```
